@@ -1,26 +1,79 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <button class="btn btn--minus" @click="minus">-</button>
+    <span id="number" :class="{ disabled: reachesLimit }">{{ number }}</span>
+    <button class="btn btn--plus" @click="add">+</button>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      number: 0
+    }
+  },
+  computed: {
+    reachesMinimal () {
+      return this.number <= 0
+    },
+    reachesMaximum () {
+      return this.number >= 10
+    },
+    reachesLimit () {
+      return this.reachesMinimal || this.reachesMaximum
+    }
+  },
+  methods: {
+    add () {
+      if (this.reachesMaximum) {
+        return false
+      }
+      this.number++
+    },
+    minus () {
+      if (this.reachesMinimal) {
+        return false
+      }
+      this.number--
+    }
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 32px;
+}
+
+#app > * + * {
+  margin-left: 8px;
+}
+
+.btn {
+  background: transparent;
+  border: 2px solid gray;
+  padding: 6px 8px;
+  line-height: 16px;
+  font-size: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#number {
+  width: 100px;
+  border: 2px solid gray;
+  padding: 6px 8px;
+  line-height: 16px;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  border-radius: 6px;
+}
+
+.disabled {
+  background-color: #faa;
 }
 </style>
